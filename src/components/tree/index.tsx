@@ -55,6 +55,8 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const flatList = ref<RequiredTreeNodeOptions[]>([]);
+    // 泛型推导优先
+    const loading = ref(false);
 
     watch(
       () => props.source,
@@ -64,9 +66,14 @@ export default defineComponent({
       { immediate: true },
     );
 
-    const expandNode = (node: RequiredTreeNodeOptions) => {
+    const expandNode = (
+      node: RequiredTreeNodeOptions,
+      children?: TreeNodeOptions[],
+    ) => {
       // 深拷贝
-      const trueChildren = cloneDeep(node.children);
+      const trueChildren = children?.length
+        ? children
+        : cloneDeep(node.children);
       node.children = trueChildren.map((item) => {
         return {
           ...item,
@@ -100,7 +107,7 @@ export default defineComponent({
       const delKeys: nodeKey[] = [];
       const recursion = (currentNode: RequiredTreeNodeOptions) => {
         if (currentNode.children.length) {
-          node.children.forEach((item) => {
+          currentNode.children.forEach((item) => {
             delKeys.push(item.nodeKey);
             if (item.expanded) {
               // 需要收起
@@ -120,6 +127,7 @@ export default defineComponent({
     };
 
     const handleToggleExpand = (node: RequiredTreeNodeOptions) => {
+      if (loading.value) return;
       node.expanded = !node.expanded;
       if (node.expanded) {
         // 展开此node下面的children  首次展开是 用户可能自带children
@@ -127,7 +135,23 @@ export default defineComponent({
         if (node.children.length) {
           expandNode(node);
         } else {
-          // 懒加载
+          // 懒加 载
+          if (props.lazyLoad) {
+            node.loading = true; // 控制图标
+            loading.value = true; //防止重复
+            props.lazyLoad(node, (children) => {
+              console.log('懒加载后的children:', children);
+
+              if (children.length) {
+                expandNode(node, children);
+              }
+              node.loading = false; // 控制图标
+              loading.value = false; //防止重复
+            });
+          } else {
+            node.expanded = !node.expanded;
+            console.error('没有children且懒加载数据也没有');
+          }
         }
       } else {
         // 收起

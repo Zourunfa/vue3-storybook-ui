@@ -18,7 +18,13 @@ export default defineComponent({
             class={['node-arrow', props.node?.expanded ? 'expanded' : '']}
             onClick={handleExpand}
           >
-            {node!.hasChildren ? <i class="iconfont iconExpand"></i> : null}
+            {node!.hasChildren ? (
+              node?.loading ? (
+                <i class="iconfont iconloading ico-loading"></i>
+              ) : (
+                <i class="iconfont iconExpand"></i>
+              )
+            ) : null}
           </div>
         );
       };

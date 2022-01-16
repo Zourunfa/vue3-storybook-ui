@@ -26,7 +26,9 @@ const TreeProps = () => ({
 
     type: Array as PropType<TreeNodeOptions[]>,
     default: () => []
-  }
+  },
+  lazyLoad: Function as PropType<(node: RequiredTreeNodeOptions, callback: (children: TreeNodeOptions[]) => void) => void>
+
 })
 
 const TreeNodePorps = () => ({

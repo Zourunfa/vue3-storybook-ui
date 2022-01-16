@@ -1,8 +1,14 @@
 import { defineComponent, ref, watch } from 'vue';
 import './index.scss';
-import { RequiredTreeNodeOptions, TreeNodeOptions, TreeProps } from './types';
+import {
+  nodeKey,
+  RequiredTreeNodeOptions,
+  TreeNodeOptions,
+  TreeProps,
+} from './types';
 import TreeNode from './node';
 import { cloneDeep } from 'lodash';
+import { RequiredArraySchema } from 'yup/lib/array';
 const props = TreeProps();
 
 function falttenTree(source: TreeNodeOptions[]): RequiredTreeNodeOptions[] {
@@ -53,8 +59,6 @@ export default defineComponent({
     watch(
       () => props.source,
       (newVal) => {
-        console.log('watch source', newVal);
-
         flatList.value = falttenTree(newVal);
       },
       { immediate: true },
@@ -91,6 +95,30 @@ export default defineComponent({
       }
     };
 
+    // 收起
+    const collapseNode = (node: RequiredTreeNodeOptions) => {
+      const delKeys: nodeKey[] = [];
+      const recursion = (currentNode: RequiredTreeNodeOptions) => {
+        if (currentNode.children.length) {
+          node.children.forEach((item) => {
+            delKeys.push(item.nodeKey);
+            if (item.expanded) {
+              // 需要收起
+              item.expanded = false;
+              recursion(item as RequiredTreeNodeOptions);
+            }
+          });
+        }
+      };
+
+      recursion(node);
+      if (delKeys.length) {
+        flatList.value = flatList.value.filter(
+          (item) => !delKeys.includes(item.nodeKey),
+        );
+      }
+    };
+
     const handleToggleExpand = (node: RequiredTreeNodeOptions) => {
       node.expanded = !node.expanded;
       if (node.expanded) {
@@ -98,9 +126,12 @@ export default defineComponent({
 
         if (node.children.length) {
           expandNode(node);
+        } else {
+          // 懒加载
         }
       } else {
-        // 懒加载
+        // 收起
+        collapseNode(node);
       }
     };
 

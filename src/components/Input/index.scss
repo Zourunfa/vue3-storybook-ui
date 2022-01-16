@@ -1,0 +1,31 @@
+.#{$af-pre}field-wrap {
+  display: inline-block;
+  width: 100%;
+  .#{$af-pre}field {
+    display: inline-block;
+    width: 100%;
+    height: 32px;
+    padding: 4px 11px;
+    color: $text-color;
+    font-size: $font-size-base;
+    line-height: 1.5;
+    background-color: $white-color;
+    border: 1.8px solid $border-color;
+    border-radius: 8px;
+    transition: all 0.1s ease-in-out;
+    outline: none;
+    &:focus {
+      border-color: $primary-color;
+    }
+  }
+  &.error {
+    .#{$af-pre}field {
+      border-color: $error-color;
+    }
+  }
+}
+
+// .#{$af-pre}-text {
+// color: rgb(111, 0, 255);
+// font-size: 50px;
+// }

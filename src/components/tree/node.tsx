@@ -10,20 +10,27 @@ export default defineComponent({
   name: 'TreeNode',
   props: props,
   emits: ['toggle-expand', 'select-change', 'check-change'],
-  setup(props, { emit }) {
+  setup(props, { emit, expose }) {
+    const halfChecked = computed(() => {
+      let res = false;
+      if (!props.checkStrctly && props.node?.hasChildren) {
+        const { children } = props.node;
+        const checkedChildren = children.filter((item) => item.checked);
+        res =
+          checkedChildren.length > 0 &&
+          checkedChildren.length < children.length;
+      }
+      return res;
+    });
+
+    expose({
+      node: props.node,
+      // halfchecked变量 只有给方法才是响应式的
+      halfChecked: () => halfChecked.value,
+    });
+
     return () => {
       const { node, render, iconSlot, showCheckbox, checkStrctly } = props;
-      const halfChecked = computed(() => {
-        let res = false;
-        if (!checkStrctly && node?.hasChildren) {
-          const { children } = node;
-          const checkedChildren = children.filter((item) => item.checked);
-          res =
-            checkedChildren.length > 0 &&
-            checkedChildren.length < children.length;
-        }
-        return res;
-      });
 
       const handleCheckChange = (checked: boolean) => {
         // console.log('node checked feeled');

@@ -3,6 +3,8 @@ import './index.scss';
 import {
   nodeKey,
   RequiredTreeNodeOptions,
+  TreeInstance,
+  TreeNodeInstance,
   TreeNodeOptions,
   TreeProps,
 } from './types';
@@ -138,7 +140,21 @@ export default defineComponent({
       getCheckedNodes: (): RequiredTreeNodeOptions[] => {
         return flatList.value.filter((item) => item.checked);
       },
+      getHalfCheckedNodes: (): RequiredTreeNodeOptions[] => {
+        return nodeRefs.value
+          .filter((item) => item.halfChecked())
+          .map((item) => item.node);
+      },
     });
+
+    // 获取for循环下面的ref节点
+    const nodeRefs = ref<TreeNodeInstance[]>([]);
+    const setNodesRef = (index: number, node: TreeNodeInstance) => {
+      if (node) {
+        nodeRefs.value[index] = node;
+        console.log('nodesRef:', nodeRefs.value);
+      }
+    };
 
     const handleToggleExpand = (node: RequiredTreeNodeOptions) => {
       if (loading.value) return;
@@ -218,6 +234,7 @@ export default defineComponent({
             iconSlot={slots.icon}
             showCheckbox={props.showCheckbox}
             onCheckChange={handleCheckChange}
+            ref={setNodesRef.bind(null, index) as any}
           />
         );
       });

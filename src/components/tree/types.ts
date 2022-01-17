@@ -26,9 +26,15 @@ type RequiredTreeNodeOptions = Required<TreeNodeOptions>
 type renderFunc<T> = PropType<(node: T) => JSX.Element>
 
 
+interface TreeNodeInstance {
+  node: RequiredTreeNodeOptions;
+  halfChecked: () => boolean;
+}
+
 interface TreeInstance {
   getSelectedNode: () => RequiredTreeNodeOptions | undefined;
-  getCheckedNodes: () => RequiredTreeNodeOptions[] | undefined
+  getCheckedNodes: () => RequiredTreeNodeOptions[] | undefined;
+  getHalfCheckedNodes: () => RequiredTreeNodeOptions[] | undefined;
 }
 
 const TreeProps = () => ({
@@ -82,4 +88,4 @@ const renderNodeProps = () => ({
 })
 
 
-export { TreeInstance, CustomEventFuncType, renderNodeProps, TreeNodePorps, TreeProps, TreeNodeOptions, nodeKey, RequiredTreeNodeOptions }
+export { TreeNodeInstance, TreeInstance, CustomEventFuncType, renderNodeProps, TreeNodePorps, TreeProps, TreeNodeOptions, nodeKey, RequiredTreeNodeOptions }

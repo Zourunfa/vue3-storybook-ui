@@ -1,6 +1,10 @@
 <template>
   <div class="main">
-    <af-tree :source="list" :lazyLoad="lazyLoad" :render="renderNode">
+    <button @click="selectedNode">获取选中节点</button>
+    <button @click="checkedNodes">获取勾选节点</button>
+    <af-tree :source="list" :lazyLoad="lazyLoad" show-checkbox ref="Atree">
+      <!--  show-checkbox
+      :render="renderNode" -->
       <template #icon="loading">
         <i v-if="loading" class="iconfont iconcustom-icon ico-loading"></i>
         <i v-else class="iconfont iconzhankai"></i>
@@ -13,7 +17,7 @@
 import { divide } from 'lodash';
 import { defineComponent, onMounted, ref } from 'vue';
 import AfTree from './index';
-import { TreeNodeOptions } from './types';
+import { TreeInstance, TreeNodeOptions } from './types';
 
 function recursion(path = '0'): TreeNodeOptions[] {
   const list = [];
@@ -47,20 +51,30 @@ export default defineComponent({
     };
     const list = ref<TreeNodeOptions[]>([]);
 
+    const Atree = ref<TreeInstance>();
+    const selectedNode = () => {
+      const node = Atree.value!.getSelectedNode();
+      console.log(node);
+    };
+    const checkedNodes = () => {
+      const nodes = Atree.value!.getCheckedNodes();
+      console.log(nodes);
+    };
+
     const lazyLoad = (
       node: TreeNodeOptions,
       callback: (children: TreeNodeOptions[]) => void,
     ) => {
       console.log('loadData', node);
       const result: TreeNodeOptions[] = [];
-      for (let i = 0; i < 2; i += 1) {
+      for (let i = 0; i < 4; i += 1) {
         const nodeKey = `${node.nodeKey}-${i}`;
         const treeNode: TreeNodeOptions = {
           nodeKey,
           name: nodeKey,
           children: [],
           hasChildren: true,
-          disabled: i % 2 == 0,
+          // disabled: i % 2 == 0,
         };
         result.push(treeNode);
       }
@@ -77,6 +91,9 @@ export default defineComponent({
       list,
       lazyLoad,
       renderNode,
+      selectedNode,
+      checkedNodes,
+      Atree,
     };
   },
 });

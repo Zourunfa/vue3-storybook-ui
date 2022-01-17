@@ -9,6 +9,7 @@ import {
 import TreeNode from './node';
 import { cloneDeep } from 'lodash';
 import { RequiredArraySchema } from 'yup/lib/array';
+import { updateDownWards, updateUpwards } from './utlils';
 const props = TreeProps();
 
 export default defineComponent({
@@ -17,8 +18,8 @@ export default defineComponent({
   components: {
     TreeNode,
   },
-  emits: ['select-change'],
-  setup(props, { emit, slots }) {
+  emits: ['select-change', 'check-change'],
+  setup(props, { emit, slots, expose }) {
     const flatList = ref<RequiredTreeNodeOptions[]>([]);
     // 泛型推导优先
     const loading = ref(false);
@@ -130,6 +131,15 @@ export default defineComponent({
       }
     };
 
+    expose({
+      getSelectedNode: (): RequiredTreeNodeOptions | undefined => {
+        return flatList.value.find((item) => item.selected);
+      },
+      getCheckedNodes: (): RequiredTreeNodeOptions[] => {
+        return flatList.value.filter((item) => item.checked);
+      },
+    });
+
     const handleToggleExpand = (node: RequiredTreeNodeOptions) => {
       if (loading.value) return;
       node.expanded = !node.expanded;
@@ -165,7 +175,6 @@ export default defineComponent({
 
     const handleSelectChange = (node: RequiredTreeNodeOptions) => {
       node.selected = !node.selected;
-      console.log(selectKey.value);
 
       // 选中逻辑
       if (selectKey.value === node.nodeKey) {
@@ -183,6 +192,20 @@ export default defineComponent({
       emit('select-change', node);
     };
 
+    const handleCheckChange = ([checked, node]: [
+      boolean,
+      RequiredTreeNodeOptions,
+    ]) => {
+      node.checked = checked;
+      if (!props.checkStrctly) {
+        // 向下更新子节点勾选
+        updateDownWards(checked, node);
+        // 向上更新父节点半选
+        updateUpwards(node, flatList.value);
+      }
+      emit('check-change', node);
+    };
+
     const renderChildren = () => {
       return flatList.value.map((node, index) => {
         return (
@@ -193,6 +216,8 @@ export default defineComponent({
             onSelectChange={handleSelectChange}
             render={props.render}
             iconSlot={slots.icon}
+            showCheckbox={props.showCheckbox}
+            onCheckChange={handleCheckChange}
           />
         );
       });

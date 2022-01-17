@@ -35,6 +35,8 @@ export default defineComponent({
       return result;
     });
     const handleClick = (event: MouseEvent) => {
+      // console.log('click checked');
+
       event.stopPropagation();
       if (!props.disabled) {
         emit('update:modelValue', !props.modelValue);

@@ -25,11 +25,25 @@ type RequiredTreeNodeOptions = Required<TreeNodeOptions>
 
 type renderFunc<T> = PropType<(node: T) => JSX.Element>
 
+
+interface TreeInstance {
+  getSelectedNode: () => RequiredTreeNodeOptions | undefined;
+  getCheckedNodes: () => RequiredTreeNodeOptions[] | undefined
+}
+
 const TreeProps = () => ({
   source: {
 
     type: Array as PropType<TreeNodeOptions[]>,
     default: () => []
+  },
+  showCheckbox: {
+    type: Boolean,
+    default: false
+  },
+  checkStrctly: {
+    type: Boolean,
+    default: false
   },
   render: Function as renderFunc<RequiredTreeNodeOptions>,
   lazyLoad: Function as PropType<(node: RequiredTreeNodeOptions, callback: (children: TreeNodeOptions[]) => void) => void>
@@ -41,6 +55,15 @@ const TreeNodePorps = () => ({
     type: Object as PropType<RequiredTreeNodeOptions>,
     required: true
   },
+  showCheckbox: {
+    type: Boolean,
+    default: false
+  },
+  checkStrctly: {
+    type: Boolean,
+    default: false
+  },
+  onCheckChange: Function as CustomEventFuncType<[boolean, RequiredTreeNodeOptions]>,
   iconSlot: Function as PropType<Slot>,
   render: Function as renderFunc<RequiredTreeNodeOptions>,
   onSelectChange: Function as CustomEventFuncType<RequiredTreeNodeOptions>,
@@ -59,4 +82,4 @@ const renderNodeProps = () => ({
 })
 
 
-export { CustomEventFuncType, renderNodeProps, TreeNodePorps, TreeProps, TreeNodeOptions, nodeKey, RequiredTreeNodeOptions }
+export { TreeInstance, CustomEventFuncType, renderNodeProps, TreeNodePorps, TreeProps, TreeNodeOptions, nodeKey, RequiredTreeNodeOptions }

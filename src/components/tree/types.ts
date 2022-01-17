@@ -2,6 +2,8 @@ import { PropType } from 'vue'
 
 type nodeKey = string | number
 
+type CustomEventFuncType<T> = PropType<(arg: T) => void>
+
 // 用户传入的source必须有nodekey和name
 interface TreeNodeOptions {
   nodeKey: nodeKey;
@@ -36,7 +38,8 @@ const TreeNodePorps = () => ({
     type: Object as PropType<RequiredTreeNodeOptions>,
     required: true
   },
-  onToggleExpand: Function as PropType<(args: RequiredTreeNodeOptions) => void>
+  onSelectChange: Function as CustomEventFuncType<RequiredTreeNodeOptions>,
+  onToggleExpand: Function as CustomEventFuncType<RequiredTreeNodeOptions>,
 })
 
 

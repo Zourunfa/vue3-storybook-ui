@@ -11,52 +11,56 @@ import { cloneDeep } from 'lodash';
 import { RequiredArraySchema } from 'yup/lib/array';
 const props = TreeProps();
 
-function falttenTree(source: TreeNodeOptions[]): RequiredTreeNodeOptions[] {
-  const res: RequiredTreeNodeOptions[] = [];
-
-  const recursion = (
-    list: TreeNodeOptions[],
-    level = 0,
-    parent: RequiredTreeNodeOptions | null = null,
-  ): RequiredTreeNodeOptions[] => {
-    return list.map((item) => {
-      const node: RequiredTreeNodeOptions = {
-        ...item,
-        level,
-        loading: false,
-        disabled: item.disabled || false,
-        expanded: item.expanded || false,
-        selected: item.selected || false,
-        checked: item.checked || parent?.checked || false,
-        hasChildren: item.hasChildren || false,
-        parentKey: parent?.nodeKey || null, //除开顶级node都有
-        children: item.children || [],
-      };
-
-      res.push(node);
-      if (node.children.length && item.expanded) {
-        // 要展开是才渲染 所以需要判断展开
-        node.children = recursion(node.children, level + 1, node);
-      }
-      return node;
-    });
-  };
-  if (source.length) {
-    recursion(source);
-  }
-  return res;
-}
-
 export default defineComponent({
   name: 'AfTree',
   props: props,
   components: {
     TreeNode,
   },
+  emits: ['select-change'],
   setup(props, { emit }) {
     const flatList = ref<RequiredTreeNodeOptions[]>([]);
     // 泛型推导优先
     const loading = ref(false);
+    const selectKey = ref<nodeKey>('');
+    function falttenTree(source: TreeNodeOptions[]): RequiredTreeNodeOptions[] {
+      const res: RequiredTreeNodeOptions[] = [];
+
+      const recursion = (
+        list: TreeNodeOptions[],
+        level = 0,
+        parent: RequiredTreeNodeOptions | null = null,
+      ): RequiredTreeNodeOptions[] => {
+        return list.map((item) => {
+          const node: RequiredTreeNodeOptions = {
+            ...item,
+            level,
+            loading: false,
+            disabled: item.disabled || false,
+            expanded: item.expanded || false,
+            selected: item.selected || false,
+            checked: item.checked || parent?.checked || false,
+            hasChildren: item.hasChildren || false,
+            parentKey: parent?.nodeKey || null, //除开顶级node都有
+            children: item.children || [],
+          };
+
+          if (node.selected) {
+            selectKey.value = node.nodeKey;
+          }
+          res.push(node);
+          if (node.children.length && item.expanded) {
+            // 要展开是才渲染 所以需要判断展开
+            node.children = recursion(node.children, level + 1, node);
+          }
+          return node;
+        });
+      };
+      if (source.length) {
+        recursion(source);
+      }
+      return res;
+    }
 
     watch(
       () => props.source,
@@ -136,7 +140,7 @@ export default defineComponent({
           expandNode(node);
         } else {
           // 懒加 载
-          if (props.lazyLoad) {
+          if (props.lazyLoad && node.hasChildren) {
             node.loading = true; // 控制图标
             loading.value = true; //防止重复
             props.lazyLoad(node, (children) => {
@@ -159,6 +163,26 @@ export default defineComponent({
       }
     };
 
+    const handleSelectChange = (node: RequiredTreeNodeOptions) => {
+      node.selected = !node.selected;
+      console.log(selectKey.value);
+
+      // 选中逻辑
+      if (selectKey.value === node.nodeKey) {
+        selectKey.value = '';
+      } else {
+        const preSelectedIndex = flatList.value.findIndex(
+          (item) => item.nodeKey === selectKey.value,
+        );
+        if (preSelectedIndex > -1) {
+          flatList.value[preSelectedIndex].selected = false;
+        }
+        selectKey.value = node.nodeKey;
+      }
+
+      emit('select-change', node);
+    };
+
     const renderChildren = () => {
       return flatList.value.map((node, index) => {
         return (
@@ -166,6 +190,7 @@ export default defineComponent({
             key={node.nodeKey}
             node={node}
             onToggleExpand={handleToggleExpand}
+            onSelectChange={handleSelectChange}
           />
         );
       });

@@ -17,6 +17,8 @@ function recursion(path = '0'): TreeNodeOptions[] {
       nodeKey,
       name: nodeKey,
       children: [],
+
+      selected: nodeKey === '0-0',
       hasChildren: true,
     };
     list.push(treeNode);
@@ -45,6 +47,7 @@ export default defineComponent({
           name: nodeKey,
           children: [],
           hasChildren: true,
+          disabled: i % 2 == 0,
         };
         result.push(treeNode);
       }

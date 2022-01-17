@@ -191,6 +191,7 @@ export default defineComponent({
             node={node}
             onToggleExpand={handleToggleExpand}
             onSelectChange={handleSelectChange}
+            render={props.render}
           />
         );
       });

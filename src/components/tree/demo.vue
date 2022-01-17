@@ -1,10 +1,11 @@
 <template>
   <div class="main">
-    <af-tree :source="list" :lazyLoad="lazyLoad"></af-tree>
+    <af-tree :source="list" :lazyLoad="lazyLoad" :render="renderNode"></af-tree>
   </div>
 </template>
 
-<script lang="ts">
+<script lang="tsx">
+import { divide } from 'lodash';
 import { defineComponent, onMounted, ref } from 'vue';
 import AfTree from './index';
 import { TreeNodeOptions } from './types';
@@ -32,6 +33,13 @@ export default defineComponent({
     AfTree,
   },
   setup() {
+    const renderNode = (node: TreeNodeOptions) => {
+      return (
+        <div style="padding: 0 4px;">
+          <b style="color: #f60;">{node.name}</b>
+        </div>
+      );
+    };
     const list = ref<TreeNodeOptions[]>([]);
 
     const lazyLoad = (
@@ -63,6 +71,7 @@ export default defineComponent({
     return {
       list,
       lazyLoad,
+      renderNode,
     };
   },
 });

@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import { textChangeRangeIsUnchanged } from 'typescript';
 import { computed, defineComponent, ref } from 'vue';
 import { nodeKey, TreeNodePorps } from './types';
+import RenderNode from './render';
 
 const props = TreeNodePorps();
 export default defineComponent({
@@ -10,7 +11,7 @@ export default defineComponent({
   emits: ['toggle-expand', 'select-change', 'check-change'],
   setup(props, { emit }) {
     return () => {
-      const { node } = props;
+      const { node, render } = props;
 
       const handleExpand = () => {
         emit('toggle-expand', props.node);
@@ -40,6 +41,18 @@ export default defineComponent({
         emit('select-change', props.node);
       };
 
+      const renderContent = () => {
+        return (
+          <div onClick={handleSelect} class="node-content node-text">
+            {render ? (
+              <RenderNode render={render} node={node}></RenderNode>
+            ) : (
+              <div class={titleClasses}>{node!.name}</div>
+            )}
+          </div>
+        );
+      };
+
       return (
         <div
           class="af-tree-node"
@@ -48,9 +61,7 @@ export default defineComponent({
           onClick={handleExpand}
         >
           {renderArrow()}
-          <div onClick={handleSelect} class="node-content node-text">
-            <div class={titleClasses}>{node!.name}</div>
-          </div>
+          {renderContent()}
         </div>
       );
     };

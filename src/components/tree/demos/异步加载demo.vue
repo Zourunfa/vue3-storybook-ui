@@ -20,9 +20,19 @@ function recursion(path = '0'): TreeNodeOptions[] {
   }
   return list;
 }
+
 export default defineComponent({
   name: 'App',
   components: {},
+  setup() {
+    // const renderNode = (node: TreeNodeOptions) => {
+    //   return (
+    //     <div style="padding: 0 4px;">
+    //       <b style="color: #f60;">{node.name}</b>
+    //     </div>
+    //   );
+    // };
+  },
 });
 </script>
 <style lang="scss"></style>

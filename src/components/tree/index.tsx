@@ -18,7 +18,7 @@ export default defineComponent({
     TreeNode,
   },
   emits: ['select-change'],
-  setup(props, { emit }) {
+  setup(props, { emit, slots }) {
     const flatList = ref<RequiredTreeNodeOptions[]>([]);
     // 泛型推导优先
     const loading = ref(false);
@@ -192,6 +192,7 @@ export default defineComponent({
             onToggleExpand={handleToggleExpand}
             onSelectChange={handleSelectChange}
             render={props.render}
+            iconSlot={slots.icon}
           />
         );
       });

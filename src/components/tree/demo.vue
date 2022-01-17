@@ -1,6 +1,11 @@
 <template>
   <div class="main">
-    <af-tree :source="list" :lazyLoad="lazyLoad" :render="renderNode"></af-tree>
+    <af-tree :source="list" :lazyLoad="lazyLoad" :render="renderNode">
+      <template #icon="loading">
+        <i v-if="loading" class="iconfont iconcustom-icon ico-loading"></i>
+        <i v-else class="iconfont iconzhankai"></i>
+      </template>
+    </af-tree>
   </div>
 </template>
 

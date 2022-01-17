@@ -1,4 +1,4 @@
-import { PropType } from 'vue'
+import { PropType, Slot } from 'vue'
 
 type nodeKey = string | number
 
@@ -41,6 +41,7 @@ const TreeNodePorps = () => ({
     type: Object as PropType<RequiredTreeNodeOptions>,
     required: true
   },
+  iconSlot: Function as PropType<Slot>,
   render: Function as renderFunc<RequiredTreeNodeOptions>,
   onSelectChange: Function as CustomEventFuncType<RequiredTreeNodeOptions>,
   onToggleExpand: Function as CustomEventFuncType<RequiredTreeNodeOptions>,
@@ -58,4 +59,4 @@ const renderNodeProps = () => ({
 })
 
 
-export { renderNodeProps, TreeNodePorps, TreeProps, TreeNodeOptions, nodeKey, RequiredTreeNodeOptions }
+export { CustomEventFuncType, renderNodeProps, TreeNodePorps, TreeProps, TreeNodeOptions, nodeKey, RequiredTreeNodeOptions }

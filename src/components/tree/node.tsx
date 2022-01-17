@@ -11,7 +11,7 @@ export default defineComponent({
   emits: ['toggle-expand', 'select-change', 'check-change'],
   setup(props, { emit }) {
     return () => {
-      const { node, render } = props;
+      const { node, render, iconSlot } = props;
 
       const handleExpand = () => {
         emit('toggle-expand', props.node);
@@ -20,7 +20,9 @@ export default defineComponent({
         return (
           <div class={['node-arrow', props.node?.expanded ? 'expanded' : '']}>
             {node!.hasChildren ? (
-              node?.loading ? (
+              iconSlot ? (
+                iconSlot(node?.loading)
+              ) : node?.loading ? (
                 <i class="iconfont iconloading ico-loading"></i>
               ) : (
                 <i class="iconfont iconExpand"></i>

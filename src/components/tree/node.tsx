@@ -13,7 +13,10 @@ export default defineComponent({
   setup(props, { emit, expose }) {
     const halfChecked = computed(() => {
       let res = false;
-      if (!props.checkStrctly && props.node?.hasChildren) {
+
+      if (!props.checkStrictly && props.node?.hasChildren) {
+        console.log('props:', props.checkStrictly, props.node?.hasChildren);
+
         const { children } = props.node;
         const checkedChildren = children.filter((item) => item.checked);
         res =
@@ -30,7 +33,7 @@ export default defineComponent({
     });
 
     return () => {
-      const { node, render, iconSlot, showCheckbox, checkStrctly } = props;
+      const { node, render, iconSlot, showCheckbox } = props;
 
       const handleCheckChange = (checked: boolean) => {
         // console.log('node checked feeled');

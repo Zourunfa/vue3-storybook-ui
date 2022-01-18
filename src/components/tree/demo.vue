@@ -11,6 +11,8 @@
         <i v-else class="iconfont iconzhankai"></i>
       </template>
     </af-tree>
+
+    <!-- <af-tree :source="list" :lazyLoad="lazyLoad" show-checkbox ref="Atree"/ > -->
   </div>
 </template>
 
@@ -32,6 +34,28 @@ function recursion(path = '0'): TreeNodeOptions[] {
       selected: nodeKey === '0-0',
       hasChildren: true,
     };
+    list.push(treeNode);
+  }
+  return list;
+}
+
+function recursionPrimary(path = '0', level = 3): TreeNodeOptions[] {
+  const list = [];
+  for (let i = 0; i < 10; i += 1) {
+    const nodeKey = `${path}-${i}`;
+    const treeNode: TreeNodeOptions = {
+      nodeKey,
+      name: nodeKey,
+      children: [],
+      hasChildren: true,
+    };
+
+    if (level > 0) {
+      treeNode.children = recursionPrimary(nodeKey, level - 1);
+    } else {
+      treeNode.hasChildren = false;
+    }
+
     list.push(treeNode);
   }
   return list;
@@ -69,7 +93,7 @@ export default defineComponent({
       node: TreeNodeOptions,
       callback: (children: TreeNodeOptions[]) => void,
     ) => {
-      console.log('loadData', node);
+      // console.log('loadData', node);
       const result: TreeNodeOptions[] = [];
       for (let i = 0; i < 4; i += 1) {
         const nodeKey = `${node.nodeKey}-${i}`;
@@ -87,8 +111,8 @@ export default defineComponent({
       }, 500);
     };
     onMounted(() => {
-      list.value = recursion();
-      console.log(list.value);
+      list.value = recursionPrimary();
+      // console.log(list.value);
     });
 
     return {

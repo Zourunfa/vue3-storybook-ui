@@ -23,7 +23,7 @@ interface TreeNodeOptions {
 type RequiredTreeNodeOptions = Required<TreeNodeOptions>
 
 
-type renderFunc<T> = PropType<(node: T) => JSX.Element>
+export type renderFunc<T> = PropType<(node: T) => JSX.Element>
 
 
 interface TreeNodeInstance {
@@ -47,7 +47,7 @@ const TreeProps = () => ({
     type: Boolean,
     default: false
   },
-  checkStrctly: {
+  checkStrictly: {
     type: Boolean,
     default: false
   },
@@ -65,7 +65,7 @@ const TreeNodePorps = () => ({
     type: Boolean,
     default: false
   },
-  checkStrctly: {
+  checkStrictly: {
     type: Boolean,
     default: false
   },

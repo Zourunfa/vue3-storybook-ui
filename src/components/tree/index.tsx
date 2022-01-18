@@ -90,7 +90,7 @@ export default defineComponent({
           expanded: item.expanded || false,
           selected: item.selected || false,
           // false也是和法治  不能用  ?? 更严格的或  只有前面是null和undefined才会走到后面去
-          checked: item.checked ?? node.checked,
+          checked: item.checked || false,
           hasChildren: item.hasChildren || false,
           parentKey: node.nodeKey || null, //除开顶级node都有
           children: item.children || [],
@@ -152,7 +152,7 @@ export default defineComponent({
     const setNodesRef = (index: number, node: TreeNodeInstance) => {
       if (node) {
         nodeRefs.value[index] = node;
-        console.log('nodesRef:', nodeRefs.value);
+        // console.log('nodesRef:', nodeRefs.value);
       }
     };
 
@@ -213,7 +213,9 @@ export default defineComponent({
       RequiredTreeNodeOptions,
     ]) => {
       node.checked = checked;
-      if (!props.checkStrctly) {
+      console.log('checkStrick', props.checkStrictly);
+
+      if (!props.checkStrictly) {
         // 向下更新子节点勾选
         updateDownWards(checked, node);
         // 向上更新父节点半选
@@ -234,6 +236,7 @@ export default defineComponent({
             iconSlot={slots.icon}
             showCheckbox={props.showCheckbox}
             onCheckChange={handleCheckChange}
+            checkStrictly={props.checkStrictly}
             ref={setNodesRef.bind(null, index) as any}
           />
         );

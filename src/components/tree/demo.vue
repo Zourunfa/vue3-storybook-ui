@@ -19,7 +19,7 @@
 <script lang="tsx">
 import { divide } from 'lodash';
 import { defineComponent, onMounted, ref } from 'vue';
-import AfTree from './index';
+import AfTree from './Tree';
 import { TreeInstance, TreeNodeOptions } from './types';
 
 function recursion(path = '0'): TreeNodeOptions[] {

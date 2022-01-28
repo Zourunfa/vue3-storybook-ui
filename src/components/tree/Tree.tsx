@@ -106,6 +106,7 @@ export default defineComponent({
           0,
           ...(node.children as RequiredTreeNodeOptions[]),
         );
+        console.log('flatList:', flatList.value);
       }
     };
 

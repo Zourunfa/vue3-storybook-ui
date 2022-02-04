@@ -2,9 +2,15 @@
   "name": "vue-test-ui",
   "version": "0.1.0",
   "private": true,
+  "main": "lib/vue-test-ui.common.js",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build:demo": "vue-cli-service build",
+    "build:lib": "vue-cli-service build --target lib --dest lib ./src/components/index.ts",
+    "build:types": "tsc --project src/components/tsconfig.json",
     "lint": "vue-cli-service lint",
     "test": "jest",
     "storybook": "start-storybook -p 6006",

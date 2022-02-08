@@ -10,6 +10,7 @@
     "serve": "vue-cli-service serve",
     "build:demo": "vue-cli-service build",
     "build:lib": "vue-cli-service build --target lib --dest lib ./src/components/index.ts",
+    "build:lib:cli": "vue-cli-service build --target lib --dest lib ./src/components/index.ts",
     "build:types": "tsc --project src/components/tsconfig.json",
     "lint": "vue-cli-service lint",
     "test": "jest",

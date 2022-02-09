@@ -6,7 +6,7 @@ import {
   TreeNodeOptions,
 } from '@/components/tree/types';
 import { PropType, ref } from 'vue';
-import AfTree from '../components/tree';
+import AfTree from '../components/tree/Tree';
 // import { withInfo } from '@storybook/addon-info';
 // import { addDecorator } from '@storybook/vue3';
 // import { addons,makeDecorator } from '@storybook/addons';

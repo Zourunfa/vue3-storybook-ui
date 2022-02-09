@@ -30,8 +30,10 @@
     <!-- <menu-demo></menu-demo> -->
 
     <!-- Tabs -->
-    <tabs-demo></tabs-demo>
+    <!-- <tabs-demo></tabs-demo> -->
     <!-- <tree-demo></tree-demo> -->
+
+    <input-demo></input-demo>
   </div>
 </template>
 
@@ -44,9 +46,10 @@ import { defineComponent } from 'vue';
 // import InputScdDemo from './components/InputScd/demo.vue';
 // import FormScdDemo from './components/FormStd/demo.vue';
 // import MenuDemo from './components/Menu/demo.vue';
-import TabsDemo from './components/Tabs/demo.vue';
+// import TabsDemo from './components/Tabs/demo.vue';
 // import AfButton from './components/Button/index';
 // import TreeDemo from './components/tree/demo.vue';
+import InputDemo from './components/AfInput/demo.vue';
 export default defineComponent({
   name: 'App',
   components: {
@@ -55,9 +58,10 @@ export default defineComponent({
     // InputScdDemo,
     // FormScdDemo,
     // MenuDemo,
-    TabsDemo,
+    // TabsDemo,
     // AfButton,
     // TreeDemo,
+    InputDemo,
   },
   setup() {
     const handleClick = () => {

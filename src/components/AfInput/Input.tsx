@@ -6,6 +6,7 @@ const props = inputProps();
 export default defineComponent({
   name: 'Input',
   props: props,
+  emits: ['update:modelValue', 'change'],
   setup(props, { emit, attrs }) {
     const classes = computed(() => {
       return {
@@ -18,13 +19,26 @@ export default defineComponent({
       };
     });
 
+    const handleChange = (e: Event) => {
+      if ((e.target as HTMLInputElement).value !== props.modelValue) {
+        emit('update:modelValue', (e.target as HTMLInputElement).value);
+        emit('change', (e.target as HTMLInputElement).value);
+      }
+    };
+
     return () => {
       const { prepend, disabled, append, style } = props;
 
       return (
         <div style={style} class={classes.value}>
           {prepend && <div class="af-input-group-prepend">{prepend}</div>}
-          <input {...attrs} class="af-input-inner" disabled={disabled}></input>
+          <input
+            {...attrs}
+            value={props.modelValue}
+            onInput={handleChange}
+            class="af-input-inner"
+            disabled={disabled}
+          ></input>
           {append && <div class="af-input-group-append"> {append}</div>}
         </div>
       );

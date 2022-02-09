@@ -8,17 +8,24 @@
       style="width: 300px"
       defaultValue="prepend text"
       prepend="https://"
+      v-model="inputValue"
     />
-
+    {{ inputValue }}
     <Input style="width: 300px" defaultValue="google" append=".com" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 export default defineComponent({
   name: 'App',
   components: {},
+  setup() {
+    const inputValue = ref('123');
+    return {
+      inputValue,
+    };
+  },
 });
 </script>
 <style lang="scss"></style>

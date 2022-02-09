@@ -33,7 +33,9 @@
     <!-- <tabs-demo></tabs-demo> -->
     <!-- <tree-demo></tree-demo> -->
 
-    <input-demo></input-demo>
+    <!-- <input-demo></input-demo> -->
+
+    <AutoCompleteDemo />
   </div>
 </template>
 
@@ -49,7 +51,8 @@ import { defineComponent } from 'vue';
 // import TabsDemo from './components/Tabs/demo.vue';
 // import AfButton from './components/Button/index';
 // import TreeDemo from './components/tree/demo.vue';
-import InputDemo from './components/AfInput/demo.vue';
+// import InputDemo from './components/AfInput/demo.vue';
+import AutoCompleteDemo from './components/AutoComplete/demo.vue';
 export default defineComponent({
   name: 'App',
   components: {
@@ -61,7 +64,8 @@ export default defineComponent({
     // TabsDemo,
     // AfButton,
     // TreeDemo,
-    InputDemo,
+    // InputDemo,
+    AutoCompleteDemo,
   },
   setup() {
     const handleClick = () => {

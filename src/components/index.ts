@@ -6,7 +6,7 @@ import Form from './Form';
 import Button from './Button';
 import TabPane from './TabPane'
 import AfTabs from './Tabs'
-
+import AutoComplete from './AutoComplete/AutoComplete';
 // import AfTree from './tree'
 
 const components = [
@@ -17,7 +17,7 @@ const components = [
   TabPane,
   AfTabs,
   // AfTree
-
+  AutoComplete
 ]
 
 export {
@@ -28,6 +28,7 @@ export {
   TabPane,
   AfTabs,
   // AfTree
+  AutoComplete
 }
 
 

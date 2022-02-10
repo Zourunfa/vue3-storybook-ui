@@ -65,7 +65,8 @@ export default defineComponent({
       return fetch(`https://api.github.com/search/users?q=${query}`)
         .then((res) => res.json())
         .then(({ items }) => {
-          console.log(items);
+          // console.log(items);
+          console.log('trigger');
           return items
             .slice(0, 10)
             .map((item: any) => ({ value: item.login, ...item }));

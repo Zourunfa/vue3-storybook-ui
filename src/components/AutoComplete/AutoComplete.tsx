@@ -1,8 +1,9 @@
-import { defineComponent, ref, watch } from 'vue';
+import { defineComponent, onMounted, ref, watch } from 'vue';
 import { AutoCompleteProps, DataSourceType } from './type';
 import Input from '../AfInput/Input';
 import './index.scss';
 import '../../assets/iconfont/iconfont.css';
+import { useDebounce } from '../hooks/useDebounce';
 
 const props = AutoCompleteProps();
 
@@ -15,12 +16,29 @@ export default defineComponent({
   emits: ['update:modelValue'],
   setup(props, { emit, attrs }) {
     const suggestions = ref<DataSourceType[]>([]);
-    const inputModelValue = ref(props.modelValue);
+    // const inputModelValue = ref(props.modelValue);
     const isLoading = ref(false);
+
+    const inputModelValue = ref(props.modelValue);
+
+    const debounced = (fn: any, delay = 2000) => {
+      let timer: any = null;
+
+      return (...args: any[]) => {
+        if (timer) {
+          clearInterval(timer);
+        }
+        timer = setTimeout(() => {
+          console.log('过了delay 执行请求');
+          fn.apply(this, args);
+          timer = null;
+        }, delay);
+      };
+    };
 
     watch(
       () => props.modelValue,
-      (newValue) => {
+      debounced((newValue: any) => {
         const res = props.fetchSuggestions!(newValue);
 
         if (res instanceof Promise) {
@@ -33,8 +51,8 @@ export default defineComponent({
           suggestions.value = res;
         }
 
-        console.log(suggestions.value);
-      },
+        // console.log(suggestions.value);
+      }),
       { immediate: true },
     );
 

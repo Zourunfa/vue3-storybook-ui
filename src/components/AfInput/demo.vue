@@ -15,13 +15,14 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="tsx">
 import { defineComponent, ref } from 'vue';
 export default defineComponent({
   name: 'App',
   components: {},
   setup() {
     const inputValue = ref('123');
+
     return {
       inputValue,
     };

@@ -1,0 +1,22 @@
+import { PropType, VNodeTypes } from 'vue';
+import { inputProps } from '../AfInput/types';
+
+
+
+interface DataSourceObject {
+  value: string
+}
+
+export type DataSourceType<T = {}> = T & DataSourceObject
+
+const AutoCompleteProps = () => ({
+  ...inputProps(),
+  fetchSuggestions: {
+    type: Function as PropType<(str: string) => DataSourceType[]>,
+    required: true,
+  },
+  onSelect: Function as PropType<(item: DataSourceType) => void>,
+  renderOption: Function as PropType<(item: DataSourceType) => VNodeTypes>,
+});
+
+export { AutoCompleteProps, DataSourceObject };

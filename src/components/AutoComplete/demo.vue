@@ -52,14 +52,25 @@ export default defineComponent({
       { value: 'kuzma', number: 0 },
     ];
 
-    const handleFetch = (query: string) => {
-      return lakers
-        .filter((name) => name.includes(query))
-        .map((name) => ({ value: name }));
-    };
+    // const handleFetch = (query: string) => {
+    //   return lakers
+    //     .filter((name) => name.includes(query))
+    //     .map((name) => ({ value: name }));
+    // };
     // const handleFetch = (query: string) => {
     //   return lakersWithNumber.filter((player) => player.value.includes(query));
     // };
+
+    const handleFetch = (query: string) => {
+      return fetch(`https://api.github.com/search/users?q=${query}`)
+        .then((res) => res.json())
+        .then(({ items }) => {
+          console.log(items);
+          return items
+            .slice(0, 10)
+            .map((item: any) => ({ value: item.login, ...item }));
+        });
+    };
 
     const selectFunc = (item: string) => {
       console.log(item);
@@ -68,7 +79,7 @@ export default defineComponent({
     const renderOptions = (item: DataSourceType<LakerPlayerProps>) => {
       return (
         <>
-          <h2>name:{item.value}</h2>;<p>number:{item.number}</p>
+          <h2>name:{item.value}</h2>;<p>url:{(item as any).url}</p>
         </>
       );
     };

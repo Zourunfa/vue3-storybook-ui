@@ -12,7 +12,7 @@ export type DataSourceType<T = {}> = T & DataSourceObject
 const AutoCompleteProps = () => ({
   ...inputProps(),
   fetchSuggestions: {
-    type: Function as PropType<(str: string) => DataSourceType[]>,
+    type: Function as PropType<(str: string) => DataSourceType[] | Promise<DataSourceObject[]>>,
     required: true,
   },
   onSelect: Function as PropType<(item: DataSourceType) => void>,

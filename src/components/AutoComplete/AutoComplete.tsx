@@ -2,6 +2,7 @@ import { defineComponent, ref, watch } from 'vue';
 import { AutoCompleteProps, DataSourceType } from './type';
 import Input from '../AfInput/Input';
 import './index.scss';
+import '../../assets/iconfont/iconfont.css';
 
 const props = AutoCompleteProps();
 
@@ -15,6 +16,7 @@ export default defineComponent({
   setup(props, { emit, attrs }) {
     const suggestions = ref<DataSourceType[]>([]);
     const inputModelValue = ref(props.modelValue);
+    const isLoading = ref(false);
 
     watch(
       () => props.modelValue,
@@ -22,7 +24,9 @@ export default defineComponent({
         const res = props.fetchSuggestions!(newValue);
 
         if (res instanceof Promise) {
+          isLoading.value = true;
           res.then((data) => {
+            isLoading.value = false;
             suggestions.value = data;
           });
         } else {
@@ -78,6 +82,11 @@ export default defineComponent({
             modelValue={inputModelValue.value}
             onChange={handleChange}
           ></Input>
+          {isLoading.value && (
+            <ul>
+              <span class="iconfont icon-loading spinner"></span>
+            </ul>
+          )}
           {suggestions.value.length > 0 && generateDropdown()}
         </div>
       );

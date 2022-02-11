@@ -4,6 +4,7 @@ import Input from '../AfInput/Input';
 import './index.scss';
 import '../../assets/iconfont/iconfont.css';
 import { useDebounce } from '../hooks/useDebounce';
+import classNames from 'classnames';
 
 const props = AutoCompleteProps();
 
@@ -18,10 +19,10 @@ export default defineComponent({
     const suggestions = ref<DataSourceType[]>([]);
     // const inputModelValue = ref(props.modelValue);
     const isLoading = ref(false);
-
     const inputModelValue = ref(props.modelValue);
+    const highlightIndex = ref(-1);
 
-    const debounced = (fn: any, delay = 2000) => {
+    const debounced = (fn: any, delay = 500) => {
       let timer: any = null;
 
       return (...args: any[]) => {
@@ -51,6 +52,7 @@ export default defineComponent({
           suggestions.value = res;
         }
 
+        highlightIndex.value = -1;
         // console.log(suggestions.value);
       }),
       { immediate: true },
@@ -79,14 +81,53 @@ export default defineComponent({
       return (
         <ul>
           {suggestions.value.map((item, index) => {
+            const cnames = classNames('suggestion-item', {
+              'is-active': index === highlightIndex.value,
+            });
+
             return (
-              <li key={index} onClick={handleSelect.bind(null, item)}>
+              <li
+                key={index}
+                class={cnames}
+                onClick={handleSelect.bind(null, item)}
+              >
                 {renderTemplate(item)}
               </li>
             );
           })}
         </ul>
       );
+    };
+
+    const highlight = (index: number) => {
+      if (index < 0) index = 0;
+      if (index >= suggestions.value.length) {
+        index = suggestions.value.length - 1;
+      }
+      highlightIndex.value = index;
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      console.log(e.keyCode);
+
+      switch (e.keyCode) {
+        case 13:
+          if (suggestions.value[highlightIndex.value]) {
+            handleSelect(suggestions.value[highlightIndex.value]);
+          }
+          break;
+        case 38:
+          highlight(highlightIndex.value - 1);
+          break;
+        case 40:
+          highlight(highlightIndex.value + 1);
+          break;
+        case 27:
+          suggestions.value = [];
+          break;
+        default:
+          break;
+      }
     };
 
     return () => {
@@ -99,6 +140,7 @@ export default defineComponent({
             {...attrs}
             modelValue={inputModelValue.value}
             onChange={handleChange}
+            onKeydown={handleKeyDown}
           ></Input>
           {isLoading.value && (
             <ul>

@@ -6,7 +6,7 @@ const props = inputProps();
 export default defineComponent({
   name: 'Input',
   props: props,
-  emits: ['update:modelValue', 'change'],
+  emits: ['update:modelValue', 'change', 'keydown'],
   setup(props, { emit, attrs }) {
     const classes = computed(() => {
       return {
@@ -27,13 +27,13 @@ export default defineComponent({
     };
 
     return () => {
-      const { prepend, disabled, append, style } = props;
+      const { prepend, disabled, append, style, ...restProps } = props;
 
       return (
         <div style={style} class={classes.value}>
           {prepend && <div class="af-input-group-prepend">{prepend}</div>}
           <input
-            {...attrs}
+            {...restProps}
             value={props.modelValue}
             onInput={handleChange}
             class="af-input-inner"

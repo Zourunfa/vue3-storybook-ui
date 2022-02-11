@@ -15,8 +15,12 @@ const inputProps = () => ({
   },
   onChange: {
     type: Function as PropType<(value: string) => void>
+  },
+  onKeydown: {
+    type: Function as PropType<(e: KeyboardEvent) => void>
   }
 })
+
 
 
 export { inputProps }

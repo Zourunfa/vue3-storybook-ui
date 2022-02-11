@@ -5,7 +5,6 @@
     <Input style="width: 300px" defaultValue="large size" size="lg" />
     <Input style="width: 300px" placeholder="small size" size="sm" /> -->
     <Input
-      style="width: 300px"
       defaultValue="prepend text"
       prepend="https://"
       v-model="inputValue"

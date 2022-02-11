@@ -34,6 +34,7 @@ export default defineComponent({
           {prepend && <div class="af-input-group-prepend">{prepend}</div>}
           <input
             {...restProps}
+            {...attrs}
             value={props.modelValue}
             onInput={handleChange}
             class="af-input-inner"

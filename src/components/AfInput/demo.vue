@@ -1,9 +1,9 @@
 <template>
   <div class="main">
-    <!-- <Input style="width: 100px" placeholder="placeholder" />
+    <Input style="width: 100px" placeholder="placeholder" />
     <Input style="width: 300px" placeholder="disabled input" disabled />
     <Input style="width: 300px" defaultValue="large size" size="lg" />
-    <Input style="width: 300px" placeholder="small size" size="sm" /> -->
+    <Input style="width: 300px" placeholder="small size" size="sm" />
     <Input
       defaultValue="prepend text"
       prepend="https://"

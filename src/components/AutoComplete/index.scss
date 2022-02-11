@@ -13,6 +13,7 @@
   border: $menu-border-width solid $menu-border-color;
   box-shadow: $submenu-box-shadow;
   width: 100%;
+  list-style: none;
 
   .suggestion-item {
     padding: $menu-item-padding-y $menu-item-padding-x;

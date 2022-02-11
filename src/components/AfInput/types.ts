@@ -10,7 +10,7 @@ const inputProps = () => ({
   append: String,
   style: Object,
   modelValue: {
-    type: String,
+    type: String || Object,
     default: ''
   },
   onChange: {

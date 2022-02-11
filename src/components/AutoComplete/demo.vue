@@ -80,7 +80,7 @@ export default defineComponent({
     const renderOptions = (item: DataSourceType<LakerPlayerProps>) => {
       return (
         <>
-          <h2>name:{item.value}</h2>;<p>url:{(item as any).url}</p>
+          <p>{item.value}</p>
         </>
       );
     };

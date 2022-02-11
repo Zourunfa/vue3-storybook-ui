@@ -5,6 +5,7 @@ import './index.scss';
 import '../../assets/iconfont/iconfont.css';
 import { useDebounce } from '../hooks/useDebounce';
 import classNames from 'classnames';
+import { useClickOutside } from '../hooks/useClickOutside';
 
 const props = AutoCompleteProps();
 
@@ -21,6 +22,15 @@ export default defineComponent({
     const isLoading = ref(false);
     const inputModelValue = ref(props.modelValue);
     const highlightIndex = ref(-1);
+    const componentRef = ref();
+    const triggerSearch = ref(true);
+
+    // onMounted(() => {
+    console.log(componentRef);
+    // });
+    useClickOutside(componentRef, () => {
+      suggestions.value = [];
+    });
 
     const debounced = (fn: any, delay = 500) => {
       let timer: any = null;
@@ -30,7 +40,7 @@ export default defineComponent({
           clearInterval(timer);
         }
         timer = setTimeout(() => {
-          console.log('过了delay 执行请求');
+          // console.log('过了delay 执行请求');
           fn.apply(this, args);
           timer = null;
         }, delay);
@@ -40,19 +50,23 @@ export default defineComponent({
     watch(
       () => props.modelValue,
       debounced((newValue: any) => {
-        const res = props.fetchSuggestions!(newValue);
+        if (triggerSearch.value) {
+          console.log(triggerSearch.value);
 
-        if (res instanceof Promise) {
-          isLoading.value = true;
-          res.then((data) => {
-            isLoading.value = false;
-            suggestions.value = data;
-          });
-        } else {
-          suggestions.value = res;
+          const res = props.fetchSuggestions!(newValue);
+
+          if (res instanceof Promise) {
+            isLoading.value = true;
+            res.then((data) => {
+              isLoading.value = false;
+              suggestions.value = data;
+            });
+          } else {
+            suggestions.value = res;
+          }
+
+          highlightIndex.value = -1;
         }
-
-        highlightIndex.value = -1;
         // console.log(suggestions.value);
       }),
       { immediate: true },
@@ -60,11 +74,13 @@ export default defineComponent({
 
     const handleChange = (value: string) => {
       // console.log(value);
+      triggerSearch.value = true;
       if (value !== props.modelValue) {
         emit('update:modelValue', value);
       }
     };
     const handleSelect = (item: DataSourceType) => {
+      triggerSearch.value = false;
       inputModelValue.value = item.value;
       suggestions.value = [];
 
@@ -79,7 +95,7 @@ export default defineComponent({
 
     const generateDropdown = (): JSX.Element => {
       return (
-        <ul>
+        <ul class="af-suggestion-list">
           {suggestions.value.map((item, index) => {
             const cnames = classNames('suggestion-item', {
               'is-active': index === highlightIndex.value,
@@ -131,11 +147,11 @@ export default defineComponent({
     };
 
     return () => {
-      const { onSelect, modelValue } = props;
-      console.log(suggestions.value);
+      const { onSelect, modelValue, style } = props;
+      // console.log(suggestions.value);
 
       return (
-        <div class="af-auto-complete">
+        <div class="af-auto-complete" style={style} ref={componentRef}>
           <Input
             {...attrs}
             modelValue={inputModelValue.value}

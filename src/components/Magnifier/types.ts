@@ -19,11 +19,11 @@ const MagnifierProps = () => ({
   },
   magWidth: {
     type: Number,
-    default: 100
+    default: 200
   },
   magHeight: {
     type: Number,
-    default: 100
+    default: 200
   }
 })
 

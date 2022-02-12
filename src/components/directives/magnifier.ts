@@ -27,7 +27,9 @@ export default {
 
         oMagWrap!.className = oMagWrap!.className + ' show'
 
-        showMag(getXY(e).x, getXY(e).y, getXY(e).mouseX, getXY(e).mouseY)
+        // 移入的时候要定位
+        const { x, y, mouseX, mouseY } = getXY(e)
+        showMag(x, y, mouseX, mouseY)
 
         document.addEventListener('mousemove', hanldMouseMove)
       }, false)
@@ -36,17 +38,21 @@ export default {
     }
 
     function hanldMouseMove(e: MouseEvent) {
-      showMag(getXY(e).x, getXY(e).y, getXY(e).mouseX, getXY(e).mouseY)
+      // 移动的时候要重新定位
+      const { x, y, mouseX, mouseY } = getXY(e)
+      showMag(x, y, mouseX, mouseY)
     }
+
+
 
     function hanldMouseOut() {
       // 鼠标出去的时候隐藏放大镜内容
       oMagWrap!.className = 'mag-wrap'
-
       document.removeEventListener('mousemove', hanldMouseMove, false)
     }
 
 
+    // 核心函数
     function showMag(x: number, y: number, mouseX: number, mouseY: number) {
       (oMagWrap as any).style.left = x + 'px';
 
@@ -55,6 +61,11 @@ export default {
       (oMagImg as any).style.left = -x + 'px';
 
       (oMagImg as any).style.top = -y + 'px';
+
+      // 如果移出整张图片之后放大镜消失
+      if (mouseX < 0 || mouseY < 0 || mouseX > imgWidth || mouseY > imgHeight) {
+        hanldMouseOut()
+      }
 
     }
 

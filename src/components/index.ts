@@ -7,6 +7,7 @@ import Button from './Button';
 import TabPane from './TabPane'
 import AfTabs from './Tabs'
 import AutoComplete from './AutoComplete/AutoComplete';
+import Magnifier from './Magnifier/Magnifier';
 // import AfTree from './tree'
 
 const components = [
@@ -17,7 +18,8 @@ const components = [
   TabPane,
   AfTabs,
   // AfTree
-  AutoComplete
+  AutoComplete,
+  Magnifier
 ]
 
 export {
@@ -28,7 +30,8 @@ export {
   TabPane,
   AfTabs,
   // AfTree
-  AutoComplete
+  AutoComplete,
+  Magnifier
 }
 
 

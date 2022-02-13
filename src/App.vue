@@ -37,7 +37,9 @@
 
     <AutoCompleteDemo /> -->
 
-    <MagnifierDemo />
+    <!-- <MagnifierDemo /> -->
+    <!-- <Stars /> -->
+    <stars-demo></stars-demo>
   </div>
 </template>
 
@@ -55,7 +57,8 @@ import { defineComponent } from 'vue';
 // import TreeDemo from './components/tree/demo.vue';
 // import InputDemo from './components/AfInput/demo.vue';
 // import AutoCompleteDemo from './components/AutoComplete/demo.vue';
-import MagnifierDemo from './components/Magnifier/demo.vue';
+// import MagnifierDemo from './components/Magnifier/demo.vue';
+import StarsDemo from './components/Stars/demo.vue';
 export default defineComponent({
   name: 'App',
   components: {
@@ -69,7 +72,8 @@ export default defineComponent({
     // TreeDemo,
     // InputDemo,
     // AutoCompleteDemo,
-    MagnifierDemo,
+    // MagnifierDemo,
+    StarsDemo,
   },
   setup() {
     const handleClick = () => {

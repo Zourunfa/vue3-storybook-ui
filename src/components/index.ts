@@ -9,6 +9,7 @@ import AfTabs from './Tabs'
 import AutoComplete from './AutoComplete/AutoComplete';
 import Magnifier from './Magnifier/Magnifier';
 // import AfTree from './tree'
+import Stars from './Stars'
 
 const components = [
   Input,
@@ -19,7 +20,8 @@ const components = [
   AfTabs,
   // AfTree
   AutoComplete,
-  Magnifier
+  Magnifier,
+  Stars
 ]
 
 export {
@@ -31,7 +33,8 @@ export {
   AfTabs,
   // AfTree
   AutoComplete,
-  Magnifier
+  Magnifier,
+  Stars
 }
 
 

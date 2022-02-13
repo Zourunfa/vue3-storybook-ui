@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'iconfont'; /* Project id  */
+  src: url('iconfont.ttf?t=1644725055056') format('truetype');
+}
+
+.iconfont {
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-star:before {
+  content: '\e629';
+}
+
+.active {
+  color: #fbab06;
+}
+
+.icon-star {
+  transition: color 0.3s;
+}

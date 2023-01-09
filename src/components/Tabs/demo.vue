@@ -2,7 +2,7 @@
   <div class="main">
     <af-tabs v-model="currentTabName">
       <tab-pane name="tab1">
-        <template #title>
+        <template v-slot:title>
           <b style="color: red">TabOne</b>
         </template>
 

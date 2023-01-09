@@ -2,6 +2,8 @@ import { PropType } from 'vue'
 
 type InputSize = 'lg' | 'sm'
 
+
+
 const inputProps = () => ({
 
   disabled: Boolean,

@@ -14,6 +14,7 @@ export default defineComponent({
   props: props,
   setup(props, { emit, slots }) {
     const parentNode = getCurrentInstance()?.parent;
+    console.log(slots);
 
     return () => {
       return (

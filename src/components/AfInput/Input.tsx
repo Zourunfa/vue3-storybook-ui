@@ -28,6 +28,7 @@ export default defineComponent({
 
     return () => {
       const { prepend, disabled, append, style, ...restProps } = props;
+      console.log(restProps);
 
       return (
         <div style={style} class={classes.value}>
